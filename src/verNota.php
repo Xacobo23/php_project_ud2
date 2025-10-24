@@ -22,19 +22,16 @@ if ($note === null) {
     exit;
 }
 
-// MODO EDICIÓN
 $editMode = isset($_GET['edit']) && $_GET['edit'] == 1;
 
-// SI SE ENVÍA EL FORMULARIO (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title'] ?? '');
     $content = trim($_POST['content'] ?? '');
 
     if ($title !== '' && $content !== '') {
         updateNote($noteId, $title, $content);
-        // Recargamos la nota actualizada
         $note = getNoteById($noteId);
-        $editMode = false; // Volvemos a modo visualización
+        $editMode = false;
         $msg = "✅ Nota actualizada correctamente";
     } else {
         $msg = "⚠️ Título y contenido no pueden estar vacíos";
@@ -48,18 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($note->getTitle() ?? '') ?></title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 2em; }
-        header { margin-bottom: 1.5em; }
-        h1 { color: #333; }
-        a, button { display: inline-block; margin-top: 10px; color: #0066cc; text-decoration: none; }
-        button { background-color: #0066cc; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #004c99; }
-        .note-content, form { background-color: #fff; padding: 1em; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.1); max-width: 600px; }
-        input[type="text"], textarea { width: 100%; padding: 8px; margin-top: 6px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px; }
-        .note-date { font-size: 0.9em; color: #666; margin-top: 1em; }
-        .msg { padding: 10px; background-color: #e0ffe0; border: 1px solid #00cc00; margin-bottom: 15px; border-radius: 4px; }
-    </style>
+    <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
 
@@ -81,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="content">Contenido:</label>
             <textarea id="content" name="content" rows="8" required><?= htmlspecialchars($note->getNoteContent() ?? '') ?></textarea>
 
-            <button type="submit">💾 Guardar cambios</button>
-            <a href="verNota.php?id=<?= htmlspecialchars($note->getId()) ?>" style="margin-left: 10px;">✖ Cancelar</a>
+            <button type="submit">Guardar cambios</button>
+            <a href="verNota.php?id=<?= htmlspecialchars($note->getId()) ?>" style="margin-left: 10px;">Cancelar</a>
         </form>
     <?php else: ?>
         <div class="note-content">
@@ -91,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="get" style="margin-top: 1em;">
                 <input type="hidden" name="id" value="<?= htmlspecialchars($note->getId()) ?>">
                 <input type="hidden" name="edit" value="1">
-                <button type="submit">✏️ Editar nota</button>
+                <button type="submit">Editar nota</button>
             </form>
         </div>
     <?php endif; ?>

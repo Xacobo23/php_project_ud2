@@ -4,9 +4,6 @@ require 'conection.php';
 require 'note.php';
 $username = $_SESSION["username"];
 
-// ------------------
-// OBTENER TODAS LAS NOTAS
-// ------------------
 function getAllNotes(): array {
     global $conn, $username;
     $stmt = $conn->prepare("
@@ -31,9 +28,6 @@ function getAllNotes(): array {
     return $noteList;
 }
 
-// ------------------
-// OBTENER UNA NOTA POR ID
-// ------------------
 function getNoteById($id) {
     global $conn, $username;
     $stmt = $conn->prepare("
@@ -61,9 +55,6 @@ function getNoteById($id) {
     }
 }
 
-// ------------------
-// CREAR UNA NUEVA NOTA
-// ------------------
 function createNote($title, $content) {
     global $conn, $username;
     $stmt = $conn->prepare("
@@ -76,9 +67,6 @@ function createNote($title, $content) {
     return $stmt->execute();
 }
 
-// ------------------
-// ACTUALIZAR UNA NOTA EXISTENTE
-// ------------------
 function updateNote($id, $title, $content) {
     global $conn, $username;
     $stmt = $conn->prepare("
@@ -94,9 +82,6 @@ function updateNote($id, $title, $content) {
     return $stmt->execute();
 }
 
-// ------------------
-// ELIMINAR UNA NOTA
-// ------------------
 function deleteNote($id) {
     global $conn, $username;
     $stmt = $conn->prepare("

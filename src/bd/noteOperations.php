@@ -4,13 +4,16 @@ require 'conection.php';
 require 'note.php';
 $username = $_SESSION["username"];
 
+// ------------------
+// OBTENER TODAS LAS NOTAS
+// ------------------
 function getAllNotes(): array {
     global $conn, $username;
     $stmt = $conn->prepare("
-    select * from notas where user_id = 
-        (select id from usuarios where username = :user)
+        SELECT * FROM notas 
+        WHERE user_id = (SELECT id FROM usuarios WHERE username = :user)
+        ORDER BY created_at DESC
     ");
-
     $stmt->bindParam(":user", $username);
     $stmt->execute();
 
@@ -22,16 +25,87 @@ function getAllNotes(): array {
         $note->setTitle($element["title"]);
         $note->setNoteContent($element["content"]);
         $note->setCreatedAt($element["created_at"]);
-        
         $noteList[] = $note;
     }
 
     return $noteList;
 }
 
+// ------------------
+// OBTENER UNA NOTA POR ID
+// ------------------
+function getNoteById($id) {
+    global $conn, $username;
+    $stmt = $conn->prepare("
+        SELECT * FROM notas 
+        WHERE id = :id
+        AND user_id = (SELECT id FROM usuarios WHERE username = :user)
+        LIMIT 1
+    ");
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':user', $username);
+    $stmt->execute();
 
-function getNoteByID($noteId) {
-    
+    $noteData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($noteData) {
+        $note = new Note();
+        $note->setId($noteData['id']);
+        $note->setUserId($noteData['user_id']);
+        $note->setTitle($noteData['title']);
+        $note->setNoteContent($noteData['content']);
+        $note->setCreatedAt($noteData['created_at']);
+        return $note;
+    } else {
+        return null;
+    }
 }
 
+// ------------------
+// CREAR UNA NUEVA NOTA
+// ------------------
+function createNote($title, $content) {
+    global $conn, $username;
+    $stmt = $conn->prepare("
+        INSERT INTO notas (user_id, title, content, created_at)
+        VALUES ((SELECT id FROM usuarios WHERE username = :user), :title, :content, CURRENT_TIMESTAMP)
+    ");
+    $stmt->bindParam(':user', $username);
+    $stmt->bindParam(':title', $title);
+    $stmt->bindParam(':content', $content);
+    return $stmt->execute();
+}
+
+// ------------------
+// ACTUALIZAR UNA NOTA EXISTENTE
+// ------------------
+function updateNote($id, $title, $content) {
+    global $conn, $username;
+    $stmt = $conn->prepare("
+        UPDATE notas 
+        SET title = :title, content = :content
+        WHERE id = :id
+        AND user_id = (SELECT id FROM usuarios WHERE username = :user)
+    ");
+    $stmt->bindParam(':title', $title);
+    $stmt->bindParam(':content', $content);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':user', $username);
+    return $stmt->execute();
+}
+
+// ------------------
+// ELIMINAR UNA NOTA
+// ------------------
+function deleteNote($id) {
+    global $conn, $username;
+    $stmt = $conn->prepare("
+        DELETE FROM notas 
+        WHERE id = :id
+        AND user_id = (SELECT id FROM usuarios WHERE username = :user)
+    ");
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':user', $username);
+    return $stmt->execute();
+}
 ?>

@@ -94,8 +94,9 @@ article .moreButton{
 
 
 body{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif !important;
     background-color: #f9f9f9;
+    padding-bottom: 200px;
 }
 
 header{
@@ -119,13 +120,20 @@ header a{
 .loginBody{
     display: flex;
     align-items: center;
-    height: 60vh;
+    height: 80vh;
     justify-content: center;
+    padding-bottom: 0;
 }
 
 .loginMain {
-    width: 30%;
-    height: 500px;
+    width: 50%;
+    height: 400px;
+    padding: 0 100px 50px 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border: #74C7DE 2px solid;
+    border-radius: 20px;
 }
 
 .loginMain form{
@@ -146,6 +154,15 @@ header a{
     height: 25px;
     margin-top: 10px;
     margin-bottom: 20px;
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+}
+
+.loginMain form button{
+    background-color: transparent;
+    border: #74C7DE solid 2px;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
 }
 
 
@@ -158,3 +175,5 @@ header a{
     margin: 5% 15% 0 15%;
     border: #74C7DE 1px solid;
 }
+
+

@@ -16,25 +16,27 @@ if (isset($_SESSION['username'])) {
     <main class="loginMain">
         <h1>Iniciar sesión</h1>
 
-        <?php if (!empty($_GET['msg'])): ?>
-            <div class="msg"><?= htmlspecialchars($_GET['msg']) ?></div>
-        <?php endif; ?>
+        
 
         <form action="login.php" method="post" autocomplete="off">
             <div>
                 <label for="username">Usuario</label>
-                <input id="username" name="username" type="text" required minlength="3" maxlength="20">
+                <input id="username" name="username" type="text" required minlength="3" maxlength="20" placeholder="Pepe">
             </div>
             
             <div>
                 <label for="password">Contraseña</label>
-                <input id="password" name="password" type="password" required minlength="6">
+                <input id="password" name="password" type="password" required minlength="6" placeholder="********">
             </div>
             
 
             <button type="submit">Entrar</button>
         </form>
 
+        <!--
+        <?php if (!empty($_GET['msg'])): ?>
+            <div class="msg"><?= htmlspecialchars($_GET['msg']) ?></div>
+        <?php endif; ?> -->
         <!-- <p class="small">Si el usuario no existe se creará automáticamente con la contraseña indicada.</p> -->
     </main>
 </body>

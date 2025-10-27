@@ -32,7 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         updateNote($noteId, $title, $content);
         $note = getNoteById($noteId);
         $editMode = false;
-        $msg = "✅ Nota actualizada correctamente";
     } else {
         $msg = "⚠️ Título y contenido no pueden estar vacíos";
     }
@@ -45,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title><?= htmlspecialchars($note->getTitle() ?? '') ?></title>
-    <link rel="stylesheet" href="./assets/style.css">
+    <link rel="stylesheet" href="./assets/style2.css">
 </head>
 <body>
 
@@ -66,9 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <label for="content">Contenido:</label>
             <textarea id="content" name="content" rows="8" required><?= htmlspecialchars($note->getNoteContent() ?? '') ?></textarea>
-
-            <button type="submit">Guardar cambios</button>
-            <a href="verNota.php?id=<?= htmlspecialchars($note->getId()) ?>" style="margin-left: 10px;">Cancelar</a>
+            <div id="divCancel">
+                <a href="verNota.php?id=<?= htmlspecialchars($note->getId()) ?>" style="margin-left: 10px;">Cancelar</a>
+                <button type="submit">Guardar cambios</button>
+            </div>
         </form>
     <?php else: ?>
         <div class="note-content">
@@ -77,7 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form method="get" style="margin-top: 1em;">
                 <input type="hidden" name="id" value="<?= htmlspecialchars($note->getId()) ?>">
                 <input type="hidden" name="edit" value="1">
-                <button type="submit">Editar nota</button>
+                <div id="divCancel">
+                    <p></p>
+                    <button type="submit">Editar nota</button>
+                </div>
             </form>
         </div>
     <?php endif; ?>
